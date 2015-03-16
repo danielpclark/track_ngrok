@@ -7,10 +7,10 @@ used on your local machine.  If the port ever changes it will use the
 twitter command line client 't' to direct message you.
 
 ### Installation
-
+```
 gem install twitter watir
 t authenticate
-
+```
 ### Usage
 
 ```
