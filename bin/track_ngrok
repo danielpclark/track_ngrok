@@ -1,0 +1,94 @@
+#!/usr/bin/env ruby
+
+
+# Track ngrok
+# Copyright (c) 2015 Daniel P. Clark All Rights Reserved
+# A command line tool that PMs you on twitter if your ngrok ports have cahnged.
+# Some times the network/routers have an issue and port numbers change.  This
+# will notify you via twitter with the new information so you can still work
+# remotely.
+#
+# Requires 'ngrok' and the gme 't' to be installed.  Twitter needs to be
+# configured with 't' for this to work.  When you setup your Twitter app you
+# will need to enable read/write/dm priveledges.
+#
+# This currently uses your web browser to check what ports are in use... don't
+# close it or it won't work.  I'd tried with PTY and failed, and the web page
+# requires Jevascript so Mechanize is out of the question.
+#
+require 'optparse'
+
+options = {ngrok:  '-proto=tcp 22', twitter: nil} # ports: nil
+
+parser = OptionParser.new do|opts|
+  opts.banner = "Usage: track_ngrok -t twitter_name [options]"
+#  opts.on('-p', '--ports numbers', 'Comma seperated port numbers to track') do |ports|
+#    options[:ports] = ports;
+#  end
+
+  opts.on('-n', '--ngrok parameters', 'Quoted parameters to give to ngrok') do |ngrok|
+    options[:ngrok] = ngrok;
+  end
+
+  opts.on('-t', '--twitter @handle', 'Your twitter handle') do |twitter|
+    options[:twitter] = twitter;
+  end
+
+  opts.on('-h', '--help', 'Displays Help') do
+    puts opts
+    exit
+  end
+end
+
+parser.parse!
+
+expression = '(:\/\/ngrok.com:(\d*))'
+records = Hash.new { |h, k| h[k] = [] }
+
+require 'watir'
+browser = Watir::Browser.new
+
+fork { `ngrok #{options[:ngrok]}` }
+
+while true
+  sleep(60 * 1)
+  browser.goto 'http://127.0.0.1:4040'
+  ports = browser.text.scan(/#{expression}/).map {|i| i[-1]}
+  unless records[:ports].sort == ports.sort
+    records[:ports] = ports 
+    `t dm #{options[:twitter]} "ngrok ports: #{ports.join(', ')}"`
+  end
+end
+
+#require 'mechanize'
+#
+#while true
+#  sleep(60 *3)
+#  Mechanize.new do |m|
+#
+#  end
+#end
+
+#require 'pty'
+#require 'expect'
+#expression =  "(ngrok.com:(\\d*).*:(#{options[:ports].gsub(',','|')}))"
+#begin
+#  return unless options[:twitter] && options[:ports]
+#  PTY.spawn("ngrok #{options[:ngrok]}") do |stdout, stdin, pid|
+#    begin
+#      while true
+#        m = stdout.expect(/#{expression}/, 10)
+#        if m
+#          unless records[m[3]].include? m[2]
+#            records[m[3]] << m[2]
+#            `t dm #{options[:twitter]} "ngrok ports: #{records.to_s}"`
+#          end
+#        end
+#      end
+#    rescue Errno::EIO
+#    end
+#  end
+#rescue PTY::ChildExited
+#    puts "The child process exited!"
+#end
+
