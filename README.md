@@ -8,7 +8,7 @@ twitter command line client 't' to direct message you.
 
 ### Installation
 ```
-gem install twitter watir
+gem install t watir
 t authenticate
 ```
 ### Usage
