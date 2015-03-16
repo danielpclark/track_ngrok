@@ -3,14 +3,14 @@
 
 # Track ngrok
 # Copyright (c) 2015 Daniel P. Clark All Rights Reserved
-# A command line tool that PMs you on twitter if your ngrok ports have cahnged.
+# A command line tool that DMs you on twitter if your ngrok ports have changed.
 # Some times the network/routers have an issue and port numbers change.  This
-# will notify you via twitter with the new information so you can still work
+# will notify you via Twitter with the new information so you can still work
 # remotely.
 #
-# Requires 'ngrok' and the gme 't' to be installed.  Twitter needs to be
-# configured with 't' for this to work.  When you setup your Twitter app you
-# will need to enable read/write/dm priveledges.
+# Requires 'ngrok' and the gem 't' to be installed.  Twitter needs to be
+# configured with 't authenticate' for this to work.  When you setup your Twitter
+# app you will need to enable read/write/dm priveledges.
 #
 # This currently uses your web browser to check what ports are in use... don't
 # close it or it won't work.  I'd tried with PTY and failed, and the web page
