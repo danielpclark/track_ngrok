@@ -60,6 +60,8 @@ end
 
 parser.parse!
 
+raise "You must define a Twitter handle to be DM'd!" unless options[:twitter]
+
 expression = '(:\/\/ngrok.com:(\d*))'
 records = Hash.new { |h, k| h[k] = [] }
 
