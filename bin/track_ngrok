@@ -78,7 +78,7 @@ end
 
 
 fork { `ngrok #{options[:ngrok]}` }
-
+sleep(15)
 while true
   if version == 1
     browser.goto 'http://127.0.0.1:4040'
