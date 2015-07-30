@@ -1,6 +1,6 @@
 ### Track ngrok
 
-UPDATED for NGROK 2!  Now without the need to `watir`, a browser, or anything
+UPDATED for NGROK 2!  Now without the need for `watir`, a browser, or anything
 other than `t`.
 
 Sometimes the home network may temporarily lose a connection.
@@ -13,12 +13,16 @@ twitter command line client 't' to direct message you.
 ```
 gem install t
 t authenticate
+wget https://github.com/danielpclark/track_ngrok/blob/master/bin/track_ngrok
+chmod +x track_ngrok
 ```
 ### Usage
 
 ```
-bin/track_ngrok -t your_twitter_handle -n "your ngrok options"
+track_ngrok -t your_twitter_handle -n "your ngrok options"
 ```
+You can generally just give your twitter handle without ngrok options if you want a standard SSH tunnel.
+
 ~~NOTE: don't close the browser window that opens.~~
 
 You can also leave off the ngrok options if you want to default to
